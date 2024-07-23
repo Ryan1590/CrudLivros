@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CrudController;
+use App\Http\Controllers\BookController;
 
-Route::get('/teste', [CrudController::class, 'index']);
+Route::get('/teste', [BookController::class, 'index']);
 
 
 
