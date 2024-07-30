@@ -44,4 +44,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function relBooks()
+    {
+        return $this->hasMany('App\Models\ModelBook', 'id_user');
+    }
 }

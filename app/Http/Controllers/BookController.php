@@ -3,15 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ModelBook;
+use App\Models\User;
 
 class BookController extends Controller
 {
+    private $objUser;
+    private $objBook;
+
+    public function __construct()
+    {
+        $this->objUser = new User();
+        $this->objBook = new ModelBook();
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view(view:'index');
+        $book = $this->objBook->all()->sortBy('title');
+        return view('index', compact('book'));
     }
 
     /**
@@ -35,9 +47,14 @@ class BookController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $book = $this->objBook->find($id);
+        if ($book) {
+            return view('show', compact('book'));
+        } else {
+            return redirect('/book')->with('error', 'Book não definido aaa');
+        }
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      */
