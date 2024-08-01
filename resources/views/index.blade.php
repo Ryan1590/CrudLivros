@@ -2,11 +2,11 @@
 
 @section('content')
 
-<h1 class="text-center mt-4 mb-4">Crud DevTech</h1>
+<h1 class="text-center mt-4 mb-4">Crud Laravel</h1>
 <hr>
 
 <div class="text-center mt-4 mb-4">
-    <a href="">
+    <a href="{{url('books/create')}}">
         <button class="btn btn-success">Cadastrar</button>
     </a>
 </div>
@@ -41,9 +41,11 @@
                 <a href="">
                     <button class="btn btn-primary">Editar</button>
                 </a>
-                <a href="">
-                    <button class="btn btn-danger">Deletar</button>
-                </a>
+                <form action="{{ route('books.destroy', $books->id) }}" method="POST" style="display:inline;">
+                     @csrf
+                     @method('DELETE')
+                     <button type="submit" class="btn btn-danger">Deletar</button>
+                </form>
             </td>
         </tr>
     @endforeach
@@ -51,4 +53,5 @@
     </tbody>
     </table>
 </div>
+
 @endsection

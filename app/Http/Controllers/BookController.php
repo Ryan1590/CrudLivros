@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest; // informando o arquivo de validação que esta sendo ultilizado no metodo store e update
 use App\Models\ModelBook;
 use App\Models\User;
 
@@ -31,17 +31,27 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        $users=$this->objUser->All(); //retornando tudo da tabela de user
+        return view('create', compact('users')); //retornando a view create mandando para view os usuarios
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-        //
-    }
+      $cad = $this->objBook->create([
+        'title' => $request->input('title'),
+        'pages' =>$request->input('pages'),
+        'price' =>$request->input('price'),
+        'id_user' =>$request->input('id_user')
+       ]);
+       if($cad){
+            
+        return redirect()->route('book')->with('success', 'Livro cadastrado com sucesso!');
 
+        }
+    }
     /**
      * Display the specified resource.
      */
@@ -66,7 +76,7 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BookRequest $request, string $id) // mudado aqui tbm para BookRequest
     {
         //
     }
@@ -76,6 +86,13 @@ class BookController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $book = $this->objBook->find($id);
+
+        if ($book) {
+            $book->delete();  // Exclua o livro
+            return redirect()->route('book')->with('success', 'Livro excluído com sucesso!');
+        } else {
+            return redirect()->route('book')->with('error', 'Livro não encontrado.');
+        }
     }
 }
