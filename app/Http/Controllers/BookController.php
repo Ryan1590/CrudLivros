@@ -31,7 +31,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        $users=$this->objUser->All(); //retornando tudo da tabela de user
+        $users = $this->objUser->All(); //retornando tudo da tabela de user
         return view('create', compact('users')); //retornando a view create mandando para view os usuarios
     }
 
@@ -40,16 +40,17 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-      $cad = $this->objBook->create([
-        'title' => $request->input('title'),
-        'pages' =>$request->input('pages'),
-        'price' =>$request->input('price'),
-        'id_user' =>$request->input('id_user')
-       ]);
-       if($cad){
-            
-        return redirect()->route('book')->with('success', 'Livro cadastrado com sucesso!');
+        $cad = $this->objBook->create([
+            'title' => $request->input('title'),
+            'pages' => $request->input('pages'),
+            'price' => $request->input('price'),
+            'id_user' => $request->input('id_user')
+        ]);
 
+        if ($cad) {
+            return redirect()->route('book')->with('success', 'Livro cadastrado com sucesso!');
+        } else {
+            return redirect()->route('book')->with('error', 'Erro ao cadastrar livro!');
         }
     }
     /**
@@ -61,24 +62,32 @@ class BookController extends Controller
         if ($book) {
             return view('show', compact('book'));
         } else {
-            return redirect('/book')->with('error', 'Book não definido aaa');
+            return redirect('/book')->with('error', 'Livro não definido');
         }
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $book = $this->objBook->find($id);
+        $users = $this->objUser->All();
+        return view('create', compact('book', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(BookRequest $request, string $id) // mudado aqui tbm para BookRequest
+    public function update(BookRequest $request, string $id)
     {
-        //
+        $this->objBook->where(['id' => $id])->update([
+            'title' => $request->input('title'),
+            'pages' => $request->input('pages'),
+            'price' => $request->input('price'),
+            'id_user' => $request->input('id_user')
+        ]);
+        return redirect()->route('book')->with('success', 'Livro atualizado com sucesso!');
     }
 
     /**
