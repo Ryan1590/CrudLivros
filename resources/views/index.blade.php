@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1 class="text-center mt-4 mb-4">Crud Laravel</h1>
+<h1 class="text-center mt-4 mb-4">Crud Livros</h1>
 <hr>
 
 <div class="container">
@@ -42,7 +42,7 @@
                     <form action="{{ route('books.destroy', $books->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Deletar</button>
+                        <button type="submit" class="btn btn-danger btn-delete">Deletar</button>
                     </form>
                 </td>
             </tr>
@@ -51,5 +51,29 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = this.closest('form');
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Você não poderá reverter isso!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 
 @endsection
