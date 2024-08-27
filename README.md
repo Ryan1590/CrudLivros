@@ -23,4 +23,4 @@ npm install
 
 ## Para statar o servidor 
 
-npm run dev
+php artisan serve
